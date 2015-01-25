@@ -14,6 +14,7 @@ import com.wifilightsense.pojos.LightReadings;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class LightManager {
 
@@ -122,7 +123,10 @@ public class LightManager {
                 synchronized (this) {
                     //Log.i(CommonUtil.TAG,"onSensorChanged : "+event.values[0]+" : : "+event.timestamp );
                     setLightValue(event.values[0]);
-                    setTimeStampt(new Date(event.timestamp / 3000));
+                    long timestamp = event.timestamp / 1000 / 1000;
+                    if (System.currentTimeMillis() - timestamp > TimeUnit.DAYS.toMillis(2))
+                        timestamp = System.currentTimeMillis() + (event.timestamp - System.nanoTime()) / 1000000L;
+                    setTimeStampt(new Date(timestamp));
                 }
 
             }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -83,6 +84,7 @@ public class NetworkActivity extends Activity implements PingCallback {
     protected void onCreate(Bundle savedInstanceState) {
         Log.e(getClass().getSimpleName(), "onCreate");
         super.onCreate(savedInstanceState);
+        BluetoothAdapter.getDefaultAdapter(); // this needs to be called from an UI thread (with a Looper). Subsequent calls will work elsewhere too.
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         Button start_listener = new Button(this);
