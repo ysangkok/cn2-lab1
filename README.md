@@ -49,7 +49,7 @@ Phones are right next to one another on a radiator. They are separated by about 
 
 ![](http://i.imgur.com/c9wQt6O.jpg)
 
-http://youtu.be/U11iXTH8ruk
+http://youtu.be/tqF30U-XNh8
 
 Scenario 3
 ---
@@ -75,6 +75,8 @@ google-Nexus 7-Nexus 7	28.0	20150125_183600
 ```
 
 You notice how the light sensor levels from after the fourth measurement. This is because the flashlight turns off.
+
+http://youtu.be/U11iXTH8ruk
 
 Scenario 4
 ---
