@@ -169,7 +169,7 @@ public class NetworkActivity extends Activity implements PingCallback {
         if (cam==null) return false;
         String flashmode = cam.getParameters().getFlashMode();
         Log.w(CommonUtil.TAG, "flashOn(): " + flashmode);
-        return flashmode.equals(Parameters.FLASH_MODE_TORCH);
+        return Parameters.FLASH_MODE_TORCH.equals(flashmode);
     }
 
     private static void broadcastUDPPacket(@NonNull Context toastContext, @NonNull DatagramPacket p) {
@@ -312,7 +312,7 @@ public class NetworkActivity extends Activity implements PingCallback {
     //************* turning on Flash *******************
     private void turnOnFlashLight() {
         if (cam != null) cam.release();
-        cam = Camera.open(Camera.getNumberOfCameras()-1);
+        cam = Camera.open();
         if (flashOn()) {
                 return;
         }
