@@ -1,0 +1,86 @@
+Device ID 												 LUX Reading 	 Timestamp
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+htc_wwe-HTC Desire-null	10.0	20150125_182115
+
+Device ID 												 LUX Reading 	 Timestamp
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+htc_wwe-HTC Desire-null	10.0	20150125_183317
+
+Device ID 												 LUX Reading 	 Timestamp
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+htc_wwe-HTC Desire-null	10.0	20150125_184958
+
+
