@@ -5,8 +5,12 @@ Push "Send ping" to send a message which will cause receiving phones to take pic
 
 We have tested with four phones: An HTC Desire, a Nexus 7, a Nexus 5 and a Samsung S4 Mini.
 
+We couldn't use the Nexus 7 to broadcast because it doesn't have a flashlight.
+
 Scenario 1
 ---
+
+In this scenario, we used a laptop to broadcast the signal.
 
 Phones are right next to one another in a bright room. This is just to test the network.
 
@@ -39,6 +43,8 @@ google-Nexus 7-Nexus 7	20.0	20150125_183102
 Scenario 2
 ---
 
+Broadcaster: S4 Mini.
+
 Phones are right next to one another on a radiator. They are separated by about two feet.
 
 ![](http://i.imgur.com/c9wQt6O.jpg)
@@ -47,6 +53,8 @@ http://youtu.be/U11iXTH8ruk
 
 Scenario 3
 ---
+
+Broadcaster: S4 Mini.
 
 The phones are on the floor, separated by about 4 feets distance.
 
@@ -70,6 +78,8 @@ You notice how the light sensor levels from after the fourth measurement. This i
 
 Scenario 4
 ---
+
+Broadcaster: S4 Mini.
 
 The phones are on a table, separated by two feets distance.
 
