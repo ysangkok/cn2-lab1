@@ -74,7 +74,11 @@ public class LightManager {
         for (int i = 0; i < 10; i++) {
             if (lightValue > 0) {
                 Log.i(CommonUtil.TAG, "Reading  # " + i + " - " + getTimeStampt() + "  -  " + getLightValue());
-                lightReadings.add(new LightReadings(getTimeStampt(), getLightValue()));
+                if (getTimeStampt() == null) {
+                	Log.w(CommonUtil.TAG, "timestamp null");
+                } else {
+                	lightReadings.add(new LightReadings(getTimeStampt(), getLightValue()));
+                }
             }
             try {
                 Thread.sleep(1000);

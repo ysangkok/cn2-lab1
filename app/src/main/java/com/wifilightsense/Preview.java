@@ -2,19 +2,25 @@ package com.wifilightsense;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
 
+import com.wifilightsense.util.CommonUtil;
+
 public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
     private final SurfaceHolder sHolder;
     private Camera sCamera;
+	private Runnable onPreviewReady;
 
-    public Preview(Context context, Camera camera) {
+    public Preview(Context context, Camera camera, Runnable a) {
         super(context);
+        onPreviewReady = a;
         sCamera = camera;
 
         sHolder = getHolder();
@@ -47,12 +53,15 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
             throw new RuntimeException(e);
         }
         sCamera.startPreview();
+        bPreviewStarted = true;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             sCamera.setPreviewDisplay(holder);
             sCamera.startPreview();
+            bPreviewStarted = true;
+            onPreviewReady.run();
         } catch (IOException e) {
             Log.e(VIEW_LOG_TAG, "Error setting camera preview in surface created: " + e.getMessage());
         }
@@ -61,5 +70,11 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
+    
+    boolean bPreviewStarted = false;
+
+	public boolean previewStarted() {
+		return bPreviewStarted;
+	}
 
 }

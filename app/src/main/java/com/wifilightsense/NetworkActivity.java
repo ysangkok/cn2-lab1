@@ -49,7 +49,10 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -360,7 +363,7 @@ public class NetworkActivity extends Activity implements PingCallback {
         }
     }
 
-    private void takePhoto() {
+    private void takePhoto() throws InterruptedException, ExecutionException {
 /*
         Log.w(CommonUtil.TAG, "Releasing camera");
         if (cam != null) cam.release();
@@ -383,13 +386,44 @@ public class NetworkActivity extends Activity implements PingCallback {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Log.w(CommonUtil.TAG, "Taking picture");
+        
         */
-        cam.takePicture(null, null, jPic);
-        cam.startPreview();
-        //Log.w(CommonUtil.TAG, "Took picture");
-    }
 
+    	Log.w(CommonUtil.TAG, "Taking picture");
+    	
+    	final CountDownLatch latch = new CountDownLatch(1);
+    	//
+    	
+    	final Preview sView;
+        Runnable a = new Runnable() {
+        	public void run() {
+        		//Log.w(CommonUtil.TAG, Thread.currentThread().getName() + "preview started2: " + sView.previewStarted());
+				cam.takePicture(null, null, jPic);
+				Log.w(CommonUtil.TAG, "Took picture");
+		        cam.startPreview();
+		        latch.countDown();
+        	}
+        };
+    	
+    	//synchronized(cam){
+        if (cam != null) cam.release();
+        cam = Camera.open(Camera.getNumberOfCameras() - 1);
+        sView = new Preview(NetworkActivity.this, cam, a);
+        camView.removeAllViews();
+        camView.addView(sView);
+    	//}
+        
+        Log.w(CommonUtil.TAG, "waiting, preview started1: " + sView.previewStarted());
+        
+        taskExecutor.execute(new Runnable() { public void run() { try {
+			latch.await();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		} } });
+    }
+    
+    ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
+    
     @NonNull
     private final PictureCallback jPic = new PictureCallback() {
 
@@ -432,15 +466,18 @@ public class NetworkActivity extends Activity implements PingCallback {
             long startTime = System.currentTimeMillis();
             final AtomicInteger i = new AtomicInteger(0);
             while (System.currentTimeMillis() - startTime < TimeUnit.SECONDS.toMillis(20)) {
-                //mHandler.post(new Runnable() {
-                //    @Override
-                //    public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
                 Log.e(CommonUtil.TAG, "calling takePhoto, photo " + i.addAndGet(1));
-                takePhoto();
-                //    }
-                //});
+                try { takePhoto();
+                } catch (InterruptedException | ExecutionException e) {
+                	throw new RuntimeException(e);
+                }
+                    }
+                });
                 try {
-                    Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(5));
                 } catch (InterruptedException e) {
                     Log.e(CommonUtil.TAG, "loopThread interrupted");
                     return;
@@ -457,13 +494,6 @@ public class NetworkActivity extends Activity implements PingCallback {
     @Override
     public void onPing() {
         Log.e("Faisal", "Ping Received ......");
-
-        if (cam != null) cam.release();
-        cam = Camera.open(Camera.getNumberOfCameras() - 1);
-        Preview sView = new Preview(NetworkActivity.this, cam);
-        camView.removeAllViews();
-        camView.addView(sView);
-
         if (loopThread == null || !loopThread.isAlive()) {
             loopThread = new Thread(pictureTaker);
             loopThread.setName("PictureTakerThread-" + ++pictureTakerThreadNumber);
