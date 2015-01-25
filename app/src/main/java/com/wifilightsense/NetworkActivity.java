@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -401,7 +402,23 @@ public class NetworkActivity extends Activity implements PingCallback {
         Runnable a = new Runnable() {
         	public void run() {
         		//Log.w(CommonUtil.TAG, Thread.currentThread().getName() + "preview started2: " + sView.previewStarted());
-                cam.takePicture(null, null, jPic);
+                Semaphore savingSem = new Semaphore(1);
+                try {
+                    savingSem.acquire();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                cam.takePicture(null, null, new SavingPictureCallback(savingSem, getContentResolver()));
+                try {
+                    if (!savingSem.tryAcquire(3, TimeUnit.SECONDS)) {
+                        Log.e(CommonUtil.TAG, "takePicture called, but PictureCallback wasn't called within 3 seconds!");
+                        latch.release();
+                        return;
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                savingSem.release();
                 Log.w(CommonUtil.TAG, "Took picture");
                 cam.startPreview();
                 latch.release();
@@ -419,7 +436,7 @@ public class NetworkActivity extends Activity implements PingCallback {
         Log.w(CommonUtil.TAG, "waiting, preview started1: " + sView.previewStarted());
         
         taskExecutor.execute(new Runnable() { public void run() { try {
-			latch.acquire(1);
+			latch.acquire();
             latch.release();
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
@@ -427,28 +444,9 @@ public class NetworkActivity extends Activity implements PingCallback {
     }
     
     ScheduledExecutorService taskExecutor = Executors.newScheduledThreadPool(1);
-    
-    @NonNull
-    private final PictureCallback jPic = new PictureCallback() {
-
-        public void onPictureTaken(@NonNull byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();
-
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-                MediaStore.Images.Media.insertImage(getContentResolver(), pictureFile.getAbsolutePath(), pictureFile.getName(), pictureFile.getName());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-    };
 
     @NonNull
-    private File getOutputMediaFile() {
+    static File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "WifiLightSense");
         // Create the storage directory if it does not exist
@@ -513,5 +511,30 @@ public class NetworkActivity extends Activity implements PingCallback {
 }
 
 class NoBroadcastAddressAvailableException extends Exception {
+
+}
+
+
+class SavingPictureCallback implements PictureCallback {
+    SavingPictureCallback(Semaphore a, ContentResolver cr) {
+        this.sem = a;
+        this.contentResolver = cr;
+    }
+    ContentResolver contentResolver;
+    Semaphore sem;
+    public void onPictureTaken(@NonNull byte[] data, Camera camera) {
+        sem.release();
+        File pictureFile = NetworkActivity.getOutputMediaFile();
+
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            fos.write(data);
+            fos.close();
+            MediaStore.Images.Media.insertImage(contentResolver, pictureFile.getAbsolutePath(), pictureFile.getName(), pictureFile.getName());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

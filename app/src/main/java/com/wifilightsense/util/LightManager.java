@@ -122,7 +122,7 @@ public class LightManager {
                 synchronized (this) {
                     //Log.i(CommonUtil.TAG,"onSensorChanged : "+event.values[0]+" : : "+event.timestamp );
                     setLightValue(event.values[0]);
-                    setTimeStampt(new Date(event.timestamp / 1000000));
+                    setTimeStampt(new Date(event.timestamp / 3000));
                 }
 
             }
