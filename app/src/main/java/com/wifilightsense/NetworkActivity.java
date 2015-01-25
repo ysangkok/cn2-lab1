@@ -366,78 +366,20 @@ public class NetworkActivity extends Activity implements PingCallback {
         }
     }
 
+    Semaphore latch;
+
     private void takePhoto() throws InterruptedException, ExecutionException {
-/*
-        Log.w(CommonUtil.TAG, "Releasing camera");
-        if (cam != null) cam.release();
-
-        Log.w(CommonUtil.TAG, "Opening camera");
-        cam = Camera.open(Camera.getNumberOfCameras()-1);
-        Runnable runnable;
-        mHandler.postAtFrontOfQueue(runnable = new Runnable(){
-            @Override
-            public void run() {
-                Preview sView = new Preview(NetworkActivity.this, cam);
-                camView.removeAllViews();
-                camView.addView(sView);
-                synchronized(this) { this.notifyAll(); }
-            }
-        });
-        Log.w(CommonUtil.TAG, "Waiting for new preview");
-        try {
-            synchronized(runnable) { runnable.wait(); }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        
-        */
-
-    	Log.w(CommonUtil.TAG, "Taking picture");
-    	
-    	final Semaphore latch = new Semaphore(1);
-        latch.acquire();
-    	//
-
-    	final Preview sView;
-        Runnable a = new Runnable() {
-        	public void run() {
-        		//Log.w(CommonUtil.TAG, Thread.currentThread().getName() + "preview started2: " + sView.previewStarted());
-                Semaphore savingSem = new Semaphore(1);
-                try {
-                    savingSem.acquire();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                cam.takePicture(null, null, new SavingPictureCallback(savingSem, getContentResolver()));
-                try {
-                    if (!savingSem.tryAcquire(3, TimeUnit.SECONDS)) {
-                        Log.e(CommonUtil.TAG, "takePicture called, but PictureCallback wasn't called within 3 seconds!");
-                        latch.release();
-                        return;
-                    }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                savingSem.release();
-                Log.w(CommonUtil.TAG, "Took picture");
-                cam.startPreview();
-                latch.release();
-        	}
-        };
-
-    	//synchronized(cam){
-        if (cam != null) cam.release();
-        cam = Camera.open(Camera.getNumberOfCameras() - 1);
-        sView = new Preview(NetworkActivity.this, cam, a);
-        camView.removeAllViews();
-        camView.addView(sView);
-    	//}
-        
-        Log.w(CommonUtil.TAG, "waiting, preview started1: " + sView.previewStarted());
-        
         taskExecutor.execute(new Runnable() { public void run() { try {
 			latch.acquire();
             latch.release();
+            Semaphore savingSem = new Semaphore(1);
+            savingSem.acquire();
+            Log.e(CommonUtil.TAG, "Calling takePicture");
+            cam.takePicture(null, null, new SavingPictureCallback(savingSem, getContentResolver()));
+            savingSem.acquire();
+            savingSem.release();
+            Log.e(CommonUtil.TAG, "Unblocked, starting preview");
+            cam.startPreview();
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		} } });
@@ -496,6 +438,24 @@ public class NetworkActivity extends Activity implements PingCallback {
     @Override
     public void onPing() {
         Log.e("Faisal", "Ping Received ......");
+
+        if (cam != null) cam.release();
+        cam = Camera.open(Camera.getNumberOfCameras() - 1);
+        latch = new Semaphore(1);
+        try {
+            latch.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Runnable a = new Runnable() {
+            public void run() {
+                latch.release();
+            }
+        };
+        Preview sView = new Preview(NetworkActivity.this, cam, a);
+        camView.removeAllViews();
+        camView.addView(sView);
+
         if (loopThread == null || !loopThread.isAlive()) {
             loopThread = new Thread(pictureTaker);
             loopThread.setName("PictureTakerThread-" + ++pictureTakerThreadNumber);
@@ -523,6 +483,7 @@ class SavingPictureCallback implements PictureCallback {
     ContentResolver contentResolver;
     Semaphore sem;
     public void onPictureTaken(@NonNull byte[] data, Camera camera) {
+        Log.w(CommonUtil.TAG, "onPictureTaken called");
         sem.release();
         File pictureFile = NetworkActivity.getOutputMediaFile();
 

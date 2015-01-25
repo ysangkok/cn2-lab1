@@ -53,14 +53,12 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
             throw new RuntimeException(e);
         }
         sCamera.startPreview();
-        bPreviewStarted = true;
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             sCamera.setPreviewDisplay(holder);
             sCamera.startPreview();
-            bPreviewStarted = true;
             onPreviewReady.run();
         } catch (IOException e) {
             Log.e(VIEW_LOG_TAG, "Error setting camera preview in surface created: " + e.getMessage());
@@ -70,11 +68,4 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
-    
-    boolean bPreviewStarted = false;
-
-	public boolean previewStarted() {
-		return bPreviewStarted;
-	}
-
 }
