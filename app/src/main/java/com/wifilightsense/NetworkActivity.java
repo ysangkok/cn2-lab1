@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -44,11 +45,14 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class NetworkActivity extends Activity implements PingCallback {
 
@@ -109,11 +113,9 @@ public class NetworkActivity extends Activity implements PingCallback {
                         }
 
                         if (mIsBound) {
-                            Log.d(CommonUtil.TAG, "Message ;  ." + mBoundService);
                             if (mBoundService != null) {
                                 pong_display.setText(mBoundService.pongs.toString());
                             }
-
                         }
                     }
                 });
@@ -144,11 +146,12 @@ public class NetworkActivity extends Activity implements PingCallback {
                 if (!checkFlashAvailability()) return;
 
                 broadcastUDPPacket(NetworkActivity.this, new DatagramPacket(new byte[]{0}, 1));
+
                 if (flashOn())
                     return;
 
                 turnOnFlashLight();
-                new CountDownTimer(5000, 1000) {
+                new CountDownTimer(5000, 5000) {
                     @Override
                     public void onFinish() {
                         turnOffFlashLight();
@@ -163,7 +166,10 @@ public class NetworkActivity extends Activity implements PingCallback {
     }
 
     private boolean flashOn() {
-        return cam.getParameters().getFlashMode() == Parameters.FLASH_MODE_TORCH;
+        if (cam==null) return false;
+        String flashmode = cam.getParameters().getFlashMode();
+        Log.w(CommonUtil.TAG, "flashOn(): " + flashmode);
+        return flashmode.equals(Parameters.FLASH_MODE_TORCH);
     }
 
     private static void broadcastUDPPacket(@NonNull Context toastContext, @NonNull DatagramPacket p) {
@@ -181,8 +187,6 @@ public class NetworkActivity extends Activity implements PingCallback {
     }
 
     public static void sendUDPPacket(@NonNull final DatagramPacket p, final InetAddress addr) {
-        //mHandler.post(new Runnable() {
-        //public void run() {
         try {
             // receive with:
             // socat UDP-LISTEN:4242,rcvbuf=1 - | head -c1 | iconv -f iso-8859-1
@@ -195,8 +199,6 @@ public class NetworkActivity extends Activity implements PingCallback {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //}});
-
     }
 
     @NonNull
@@ -311,51 +313,88 @@ public class NetworkActivity extends Activity implements PingCallback {
     private void turnOnFlashLight() {
         if (cam != null) cam.release();
         cam = Camera.open(Camera.getNumberOfCameras()-1);
-        if (!flashOn()) {
+        if (flashOn()) {
                 return;
         }
-        cam.getParameters().setFlashMode(Parameters.FLASH_MODE_TORCH);
+        Camera.Parameters params;
+        (params = cam.getParameters()).setFlashMode(Parameters.FLASH_MODE_TORCH);
+        cam.setParameters(params);
+        cam.startPreview();
     }
 
     //*************** turning of Flash *****************
     private void turnOffFlashLight() {
         if (!flashOn()) {
-            Log.w(CommonUtil.TAG, "TRYING TO TURN OFF FLASHLIGHT THAT ISN'T ON");
+            Log.w(CommonUtil.TAG, "TRYING TO TURN OFF FLASHLIGHT THAT ISN'T ON, status: " + (cam == null ? "no cam" : cam.getParameters().getFlashMode()));
             return;
         }
 
-        cam.getParameters().setFlashMode(Parameters.FLASH_MODE_OFF);
+        Camera.Parameters params;
+        (params = cam.getParameters()).setFlashMode(Parameters.FLASH_MODE_OFF);
+        cam.setParameters(params);
+        cam.stopPreview();
         cam.release();
     }
 
     @Override protected void onPause() {
         super.onPause();
+        if (loopThread != null) loopThread.interrupt();
         if (cam != null) cam.release();
-        loopThread.interrupt();
+    }
+
+    private void runWithDeadline(final Runnable r) {
+        AsyncTask<Void, Void, Void> ru = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                r.run();
+                return null;
+            }
+        };
+
+        try {
+            ru.execute().get(5, TimeUnit.SECONDS);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            throw new RuntimeException("Camera operation timeout");
+        }
     }
 
     private void takePhoto() {
+/*
+        Log.w(CommonUtil.TAG, "Releasing camera");
         if (cam != null) cam.release();
+
+        Log.w(CommonUtil.TAG, "Opening camera");
         cam = Camera.open(Camera.getNumberOfCameras()-1);
-        Preview sView = new Preview(this, cam);
-        sView.clearFocus();
-        camView.removeAllViews();
-        camView.addView(sView);
-
+        Runnable runnable;
+        mHandler.postAtFrontOfQueue(runnable = new Runnable(){
+            @Override
+            public void run() {
+                Preview sView = new Preview(NetworkActivity.this, cam);
+                camView.removeAllViews();
+                camView.addView(sView);
+                synchronized(this) { this.notifyAll(); }
+            }
+        });
+        Log.w(CommonUtil.TAG, "Waiting for new preview");
+        try {
+            synchronized(runnable) { runnable.wait(); }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Log.w(CommonUtil.TAG, "Taking picture");
+        */
         cam.takePicture(null, null, jPic);
-
+        cam.startPreview();
+        //Log.w(CommonUtil.TAG, "Took picture");
     }
 
-    @Nullable
+    @NonNull
     private final PictureCallback jPic = new PictureCallback() {
 
         public void onPictureTaken(@NonNull byte[] data, Camera camera) {
-
             File pictureFile = getOutputMediaFile();
-
-            if (pictureFile == null) {
-                return;
-            }
 
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
@@ -382,44 +421,57 @@ public class NetworkActivity extends Activity implements PingCallback {
         }
         if (!mediaStorageDir.isDirectory()) throw new RuntimeException("mediaStorageDir isn't a directory");
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = CommonUtil.dateFormat.format(new Date());
 
         return new File(mediaStorageDir.getPath() + File.separator + CommonUtil.getDeviceId() + "-" + NetworkService.getNetworkIdentifierOrPlaceholder() + "-" + timeStamp + ".jpg");
     }
 
-    private final Thread loopThread = new Thread(new Runnable() {
+    private final Runnable pictureTaker = new Runnable() {
         @Override
         public void run() {
             long startTime = System.currentTimeMillis();
-            while (System.currentTimeMillis() - startTime < 5 * 60 * 1000) {
-                mHandler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Log.e(CommonUtil.TAG, "calling takePhoto");
-                        // Write your code here to update the UI.
-                        takePhoto();//replace this function with broadcast message to other devices
-                        //then on other devices call takephoto() when broadcast message is received
-                    }
-                });
-
-                Log.e(CommonUtil.TAG, "Sleeping");
+            final AtomicInteger i = new AtomicInteger(0);
+            while (System.currentTimeMillis() - startTime < TimeUnit.SECONDS.toMillis(20)) {
+                //mHandler.post(new Runnable() {
+                //    @Override
+                //    public void run() {
+                Log.e(CommonUtil.TAG, "calling takePhoto, photo " + i.addAndGet(1));
+                takePhoto();
+                //    }
+                //});
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(1));
                 } catch (InterruptedException e) {
                     Log.e(CommonUtil.TAG, "loopThread interrupted");
-                    break;
+                    return;
                 }
             }
         }
-    });
+    };
+
+    @Nullable
+    Thread loopThread;
+
+    static int pictureTakerThreadNumber = 0;
 
     @Override
     public void onPing() {
         Log.e("Faisal", "Ping Received ......");
-        if (!loopThread.isAlive()) loopThread.start();
-        else Log.e(CommonUtil.TAG, "Loop thread already started");
+
+        if (cam != null) cam.release();
+        cam = Camera.open(Camera.getNumberOfCameras() - 1);
+        Preview sView = new Preview(NetworkActivity.this, cam);
+        camView.removeAllViews();
+        camView.addView(sView);
+
+        if (loopThread == null || !loopThread.isAlive()) {
+            loopThread = new Thread(pictureTaker);
+            loopThread.setName("PictureTakerThread-" + ++pictureTakerThreadNumber);
+            loopThread.start();
+        } else {
+            Log.w(CommonUtil.TAG, "Loop thread already started");
+        }
+
         Intent brdIntent = new Intent();
         brdIntent.setAction("com.wifilightsense.pingaction");
         sendBroadcast(brdIntent);

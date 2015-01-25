@@ -12,15 +12,15 @@ import android.util.Log;
 import com.wifilightsense.pojos.LightReadings;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class LightManager {
 
     @NonNull
     private final Context mContext;
     private float lightValue = -1F;
-    private Long timeStampt;
+    private Date timeStampt;
     private final PackageManager manager;
     @NonNull
     private final List<LightReadings> lightReadings;
@@ -32,7 +32,7 @@ public class LightManager {
     }
 
     @NonNull
-    public List<LightReadings> getLightReadings() {
+    public List<LightReadings> generateLightReadingsList() {
         List<LightReadings> result;
         if (!hasLightSensorFeature()) {
             return new ArrayList<>();
@@ -41,7 +41,7 @@ public class LightManager {
         registerLightSensor();
         Date d1 = new Date();
 
-        result = getReadings();
+        result = doReadings();
 
         Date d2 = new Date();
         Log.e("Difference", "" + (int) ((d2.getTime() - d1.getTime())));
@@ -70,7 +70,7 @@ public class LightManager {
     }
 
     @NonNull
-    private List<LightReadings> getReadings() {
+    private List<LightReadings> doReadings() {
         for (int i = 0; i < 10; i++) {
             if (lightValue > 0) {
                 Log.i(CommonUtil.TAG, "Reading  # " + i + " - " + getTimeStampt() + "  -  " + getLightValue());
@@ -86,7 +86,6 @@ public class LightManager {
         return lightReadings;
     }
 
-
     private void setLightValue(float lightValue) {
         synchronized (this) {
             this.lightValue = lightValue;
@@ -94,11 +93,11 @@ public class LightManager {
     }
 
 
-    Long getTimeStampt() {
+    Date getTimeStampt() {
         return timeStampt;
     }
 
-    void setTimeStampt(Long timeStampt) {
+    void setTimeStampt(Date timeStampt) {
         this.timeStampt = timeStampt;
     }
 
@@ -119,7 +118,7 @@ public class LightManager {
                 synchronized (this) {
                     //Log.i(CommonUtil.TAG,"onSensorChanged : "+event.values[0]+" : : "+event.timestamp );
                     setLightValue(event.values[0]);
-                    setTimeStampt(event.timestamp);
+                    setTimeStampt(new Date(event.timestamp / 1000000));
                 }
 
             }

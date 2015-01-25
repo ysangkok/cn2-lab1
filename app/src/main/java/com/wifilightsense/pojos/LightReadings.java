@@ -3,20 +3,22 @@
  */
 package com.wifilightsense.pojos;
 
+import java.util.Date;
+
 /**
  * @author FAISAL
  */
 public class LightReadings {
-    private final Long timestamp;
+    private final Date timestamp;
     private final float lux;
 
-    public LightReadings(Long timestamp, float lux) {
+    public LightReadings(Date timestamp, float lux) {
         super();
         this.timestamp = timestamp;
         this.lux = lux;
     }
 
-    public Long getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 

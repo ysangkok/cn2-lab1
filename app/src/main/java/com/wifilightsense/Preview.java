@@ -13,10 +13,6 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
     private final SurfaceHolder sHolder;
     private Camera sCamera;
 
-    public void setCamera(Camera c) {
-        sCamera = c;
-    }
-
     public Preview(Context context, Camera camera) {
         super(context);
         sCamera = camera;
@@ -58,7 +54,7 @@ public class Preview extends SurfaceView implements SurfaceHolder.Callback {
             sCamera.setPreviewDisplay(holder);
             sCamera.startPreview();
         } catch (IOException e) {
-            Log.d(VIEW_LOG_TAG, "Error setting camera preview in surface created: " + e.getMessage());
+            Log.e(VIEW_LOG_TAG, "Error setting camera preview in surface created: " + e.getMessage());
         }
 
     }

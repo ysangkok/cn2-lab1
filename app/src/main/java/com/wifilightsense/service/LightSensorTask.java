@@ -6,19 +6,14 @@ package com.wifilightsense.service;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.wifilightsense.db.FileHelper;
-import com.wifilightsense.pojos.LightReadings;
-import com.wifilightsense.util.CommonUtil;
 import com.wifilightsense.util.LightManager;
-
-import java.util.List;
 
 /**
  * @author FAISAL
  */
-class LightSensorTask extends AsyncTask<String, Void, String> {
+class LightSensorTask extends AsyncTask<Void, Void, Void> {
 
 
     private final Context context;
@@ -29,18 +24,9 @@ class LightSensorTask extends AsyncTask<String, Void, String> {
 
     @NonNull
     @Override
-    protected String doInBackground(String... params) {
-        Log.i(CommonUtil.TAG, "doInBackground called .....");
-        saveReadingsInDB(new LightManager(context).getLightReadings());
+    protected Void doInBackground(Void... params) {
+        FileHelper.getFileHelperObj().saveReadingsToFile(new LightManager(context).generateLightReadingsList());
         PeriodicBroadcastReceiver.releaseLock();
-        return "Executed";
+        return null;
     }
-
-    private void saveReadingsInDB(@NonNull List<LightReadings> readings) {
-        Log.i(CommonUtil.TAG, "saveReadingsInDB called .....");
-        FileHelper.getFileHelperObj().saveReadingsToFile(readings);
-        //getDBInstance().insertIntoLightTable(readings);
-
-    }
-
 }

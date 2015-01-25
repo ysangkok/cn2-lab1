@@ -44,13 +44,13 @@ public class FileHelper {
         StringBuilder row = new StringBuilder();
 
         for (LightReadings l : lr) {
-                row.append(CommonUtil.getDeviceId());
-                row.append("\t");
-                row.append(l.getLux());
-                row.append("\t");
-                row.append(l.getTimestamp().toString());
-                row.append("\n");
-                //Log.i(CommonUtil.TAG, "Record : "+row.toString() );
+            row.append(CommonUtil.getDeviceId());
+            row.append("\t");
+            row.append(l.getLux());
+            row.append("\t");
+            row.append(CommonUtil.dateFormat.format(l.getTimestamp()));
+            row.append("\n");
+            //Log.i(CommonUtil.TAG, "Record : "+row.toString() );
         }
 
         writeReadings(row.toString());
@@ -61,7 +61,7 @@ public class FileHelper {
 
     void writeReadings(String data) {
         try {
-            Log.i(CommonUtil.TAG, "Writing data to file ...");
+            Log.i(CommonUtil.TAG, "Writing data to file " + file.getAbsolutePath());
             //file = new File(dir, "WifiLightSense.txt");
             FileOutputStream f = new FileOutputStream(file, true);
             PrintWriter pw = new PrintWriter(f);
@@ -70,14 +70,11 @@ public class FileHelper {
             pw.close();
             f.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Log.i(CommonUtil.TAG,
+            Log.e(CommonUtil.TAG,
                     "******* File not found. Did you"
                             + " add a WRITE_EXTERNAL_STORAGE permission to the   manifest?");
         } catch (IOException e) {
-            Log.i(CommonUtil.TAG,
-                    e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

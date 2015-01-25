@@ -121,6 +121,7 @@ public class NetworkService extends Service {
                 }
             }
         });
+        t.setName("NetworkServiceReceiveThread");
         t.start();
     }
 
