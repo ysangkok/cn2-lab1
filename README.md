@@ -7,6 +7,8 @@ We have tested with four phones: An HTC Desire, a Nexus 7, a Nexus 5 and a Samsu
 
 We couldn't use the Nexus 7 to broadcast because it doesn't have a flashlight.
 
+Check out the folders `scenario1`, `scenario2`, `scenario3`, `scenario4` for more photos and raw light sensor readings. The captured images are available upon request.
+
 Scenario 1
 ---
 
