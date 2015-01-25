@@ -1,0 +1,86 @@
+LUX Reading 	 Timestamp
+google-Nexus 7-Nexus 7	44.0	20150125_182412
+google-Nexus 7-Nexus 7	44.0	20150125_182412
+google-Nexus 7-Nexus 7	40.0	20150125_182415
+google-Nexus 7-Nexus 7	42.0	20150125_182416
+google-Nexus 7-Nexus 7	40.0	20150125_182417
+google-Nexus 7-Nexus 7	40.0	20150125_182418
+google-Nexus 7-Nexus 7	36.0	20150125_182419
+google-Nexus 7-Nexus 7	40.0	20150125_182420
+google-Nexus 7-Nexus 7	40.0	20150125_182421
+
+google-Nexus 7-Nexus 7	42.0	20150125_182441
+google-Nexus 7-Nexus 7	34.0	20150125_182442
+google-Nexus 7-Nexus 7	36.0	20150125_182443
+google-Nexus 7-Nexus 7	36.0	20150125_182444
+google-Nexus 7-Nexus 7	40.0	20150125_182445
+google-Nexus 7-Nexus 7	40.0	20150125_182446
+google-Nexus 7-Nexus 7	40.0	20150125_182447
+google-Nexus 7-Nexus 7	28.0	20150125_182448
+google-Nexus 7-Nexus 7	40.0	20150125_182449
+google-Nexus 7-Nexus 7	36.0	20150125_182450
+
+google-Nexus 7-Nexus 7	40.0	20150125_182455
+google-Nexus 7-Nexus 7	36.0	20150125_182455
+google-Nexus 7-Nexus 7	42.0	20150125_182457
+google-Nexus 7-Nexus 7	38.0	20150125_182458
+google-Nexus 7-Nexus 7	38.0	20150125_182459
+google-Nexus 7-Nexus 7	36.0	20150125_182500
+google-Nexus 7-Nexus 7	36.0	20150125_182501
+google-Nexus 7-Nexus 7	36.0	20150125_182502
+google-Nexus 7-Nexus 7	40.0	20150125_182503
+google-Nexus 7-Nexus 7	20.0	20150125_182504
+
+google-Nexus 7-Nexus 7	52.0	20150125_182908
+google-Nexus 7-Nexus 7	46.0	20150125_182909
+google-Nexus 7-Nexus 7	46.0	20150125_182910
+google-Nexus 7-Nexus 7	44.0	20150125_182911
+google-Nexus 7-Nexus 7	56.0	20150125_182912
+google-Nexus 7-Nexus 7	24.0	20150125_182913
+google-Nexus 7-Nexus 7	14.0	20150125_182914
+google-Nexus 7-Nexus 7	18.0	20150125_182915
+google-Nexus 7-Nexus 7	18.0	20150125_182916
+google-Nexus 7-Nexus 7	20.0	20150125_182917
+
+google-Nexus 7-Nexus 7	20.0	20150125_183030
+google-Nexus 7-Nexus 7	24.0	20150125_183031
+google-Nexus 7-Nexus 7	18.0	20150125_183032
+google-Nexus 7-Nexus 7	12.0	20150125_183033
+google-Nexus 7-Nexus 7	24.0	20150125_183034
+google-Nexus 7-Nexus 7	14.0	20150125_183035
+google-Nexus 7-Nexus 7	20.0	20150125_183036
+google-Nexus 7-Nexus 7	24.0	20150125_183037
+google-Nexus 7-Nexus 7	22.0	20150125_183038
+
+google-Nexus 7-Nexus 7	22.0	20150125_183053
+google-Nexus 7-Nexus 7	26.0	20150125_183054
+google-Nexus 7-Nexus 7	18.0	20150125_183055
+google-Nexus 7-Nexus 7	26.0	20150125_183056
+google-Nexus 7-Nexus 7	20.0	20150125_183057
+google-Nexus 7-Nexus 7	22.0	20150125_183059
+google-Nexus 7-Nexus 7	20.0	20150125_183100
+google-Nexus 7-Nexus 7	6.0	20150125_183101
+google-Nexus 7-Nexus 7	20.0	20150125_183102
+google-Nexus 7-Nexus 7	20.0	20150125_183102
+
+Device ID 												 LUX Reading 	 Timestamp
+google-Nexus 7-Nexus 7	40.0	20150125_183525
+google-Nexus 7-Nexus 7	46.0	20150125_183526
+google-Nexus 7-Nexus 7	36.0	20150125_183527
+google-Nexus 7-Nexus 7	38.0	20150125_183528
+
+google-Nexus 7-Nexus 7	2.0	20150125_183552
+
+google-Nexus 7-Nexus 7	24.0	20150125_183600
+google-Nexus 7-Nexus 7	28.0	20150125_183600
+google-Nexus 7-Nexus 7	28.0	20150125_183600
+google-Nexus 7-Nexus 7	28.0	20150125_183600
+
+
+google-Nexus 7-Nexus 7	2.0	20150125_185409
+
+google-Nexus 7-Nexus 7	2.0	20150125_185434
+google-Nexus 7-Nexus 7	2.0	20150125_185436
+google-Nexus 7-Nexus 7	4.0	20150125_185437
+
+

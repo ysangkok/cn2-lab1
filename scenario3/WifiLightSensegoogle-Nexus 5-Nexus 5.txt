@@ -1,0 +1,47 @@
+LUX Reading 	 Timestamp
+google-Nexus 5-Nexus 5	18.0	20150125_175122
+google-Nexus 5-Nexus 5	18.0	20150125_175123
+google-Nexus 5-Nexus 5	10.0	20150125_175124
+google-Nexus 5-Nexus 5	9.0	20150125_175125
+google-Nexus 5-Nexus 5	11.0	20150125_175126
+google-Nexus 5-Nexus 5	12.0	20150125_175127
+google-Nexus 5-Nexus 5	87.0	20150125_175128
+google-Nexus 5-Nexus 5	49.0	20150125_175129
+google-Nexus 5-Nexus 5	21.0	20150125_175130
+
+Device ID 												 LUX Reading 	 Timestamp
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+google-Nexus 5-Nexus 5	6.0	20150125_182412
+
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+google-Nexus 5-Nexus 5	6.0	20150125_182434
+
+Device ID 												 LUX Reading 	 Timestamp
+
+
+
+Device ID 												 LUX Reading 	 Timestamp
+google-Nexus 5-Nexus 5	1.0	20150125_185416
+google-Nexus 5-Nexus 5	1.0	20150125_185416
+google-Nexus 5-Nexus 5	1.0	20150125_185416
+
+google-Nexus 5-Nexus 5	1.0	20150125_185444
+google-Nexus 5-Nexus 5	1.0	20150125_185444
+google-Nexus 5-Nexus 5	1.0	20150125_185444
+google-Nexus 5-Nexus 5	1.0	20150125_185444
+
+
