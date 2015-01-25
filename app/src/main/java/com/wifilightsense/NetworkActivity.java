@@ -53,6 +53,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -391,20 +393,21 @@ public class NetworkActivity extends Activity implements PingCallback {
 
     	Log.w(CommonUtil.TAG, "Taking picture");
     	
-    	final CountDownLatch latch = new CountDownLatch(1);
+    	final Semaphore latch = new Semaphore(1);
+        latch.acquire();
     	//
-    	
+
     	final Preview sView;
         Runnable a = new Runnable() {
         	public void run() {
         		//Log.w(CommonUtil.TAG, Thread.currentThread().getName() + "preview started2: " + sView.previewStarted());
-				cam.takePicture(null, null, jPic);
-				Log.w(CommonUtil.TAG, "Took picture");
-		        cam.startPreview();
-		        latch.countDown();
+                cam.takePicture(null, null, jPic);
+                Log.w(CommonUtil.TAG, "Took picture");
+                cam.startPreview();
+                latch.release();
         	}
         };
-    	
+
     	//synchronized(cam){
         if (cam != null) cam.release();
         cam = Camera.open(Camera.getNumberOfCameras() - 1);
@@ -416,13 +419,14 @@ public class NetworkActivity extends Activity implements PingCallback {
         Log.w(CommonUtil.TAG, "waiting, preview started1: " + sView.previewStarted());
         
         taskExecutor.execute(new Runnable() { public void run() { try {
-			latch.await();
+			latch.acquire(1);
+            latch.release();
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		} } });
     }
     
-    ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
+    ScheduledExecutorService taskExecutor = Executors.newScheduledThreadPool(1);
     
     @NonNull
     private final PictureCallback jPic = new PictureCallback() {
