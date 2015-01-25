@@ -9,6 +9,11 @@ We couldn't use the Nexus 7 to broadcast because it doesn't have a flashlight.
 
 Check out the folders `scenario1`, `scenario2`, `scenario3`, `scenario4` for more photos and raw light sensor readings. The captured images are available upon request.
 
+Build instructions
+---
+
+This is an Android Studio project. Import it into Android Studio, and it will build with Gradle. It can also build with Gradle alone, but we didn't test that.
+
 Scenario 1
 ---
 
