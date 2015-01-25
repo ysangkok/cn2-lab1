@@ -342,12 +342,14 @@ public class NetworkActivity extends Activity implements PingCallback {
         cam.setParameters(params);
         cam.stopPreview();
         cam.release();
+        cam = null;
     }
 
     @Override protected void onPause() {
         super.onPause();
         if (loopThread != null) loopThread.interrupt();
         if (cam != null) cam.release();
+        cam = null;
     }
 
     private void runWithDeadline(final Runnable r) {
